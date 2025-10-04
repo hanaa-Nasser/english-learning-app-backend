@@ -4,7 +4,7 @@ from django.db import models
 
 class CommunityPost(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='community_posts')
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='community_posts', null=True)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -14,8 +14,8 @@ class CommunityPost(models.Model):
 
 class CommunityReply(models.Model):
     id = models.AutoField(primary_key=True)
-    post = models.ForeignKey(CommunityPost, on_delete=models.CASCADE, related_name='replies')
-    user = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='community_replies')
+    post = models.ForeignKey(CommunityPost, on_delete=models.CASCADE, related_name='replies',null=True)
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='community_replies',null=True)
     reply = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 

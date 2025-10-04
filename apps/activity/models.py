@@ -20,7 +20,7 @@ class ActionLog(models.Model):
         ('announcement', 'Announcement'),
     ]
     id = models.UUIDField(primary_key=True, editable=False)
-    user = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='action_logs')
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='action_logs', null=True, blank=True)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES)
     action_type = models.CharField(max_length=30, choices=ACTION_TYPE_CHOICES)
     target_id = models.IntegerField()
