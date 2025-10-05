@@ -103,19 +103,19 @@ TEMPLATES = [
     },
 ]
 
-# WSGI_APPLICATION = 'config.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 # # Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'elb',
-        'USER': 'postgres',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',   # or the IP of your PostgreSQL server
-        'PORT': '5432',        # default PostgreSQL port
-    }
-}
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+ #       'NAME': 'elb',
+ #       'USER': 'postgres',
+ #       'PASSWORD': '1234',
+ #       'HOST': 'localhost',   # or the IP of your PostgreSQL server
+ #        'PORT': '5432',        # default PostgreSQL port
+ #   }
+#}
 
 cloudinary.config( 
   cloud_name = env('CLOUDINARY_CLOUD_NAME'), 
