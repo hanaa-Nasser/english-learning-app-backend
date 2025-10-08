@@ -5,9 +5,11 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from django.http import JsonResponse
 
 urlpatterns = [
     # Admin interface
+    path('', lambda request: JsonResponse({'message': 'API is running ✅'})),
     path('admin/', admin.site.urls),
     path('', include('apps.lectures.urls')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

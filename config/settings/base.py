@@ -7,6 +7,7 @@ from pathlib import Path
 from datetime import timedelta
 import cloudinary
 import environ
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -106,15 +107,22 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 # # Database
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'elb',
+        'USER': 'postgres',
+        'PASSWORD': '1234',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}
 #DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql',
- #       'NAME': 'elb',
- #       'USER': 'postgres',
- #       'PASSWORD': '1234',
- #       'HOST': 'localhost',   # or the IP of your PostgreSQL server
- #        'PORT': '5432',        # default PostgreSQL port
- #   }
+#    'default': dj_database_url.config(
+ #       default='postgres://postgres:1234@localhost:5432/elb',
+ #       conn_max_age=600,
+ #       ssl_require=False  # خليه False محليًا، وTrue في الإنتاج
+ #   )
 #}
 
 cloudinary.config( 
@@ -303,6 +311,10 @@ CHANNEL_LAYERS = {
 # }
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_LOGIN_METHODS = {'email'}
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'optional' 
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+
+ACCOUNT_SIGNUP_FIELDS = {
+    'email': {'required': True},
+}
