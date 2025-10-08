@@ -16,7 +16,7 @@ DATABASES = {
     'default': dj_database_url.config(
         conn_max_age=600,
         ssl_require=True,
-        default='postgres://postgres:1234@127.0.0.1:5432/elb'
+        
     )
 }
 
