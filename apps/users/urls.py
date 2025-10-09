@@ -2,7 +2,7 @@
 URL patterns for user management.
 """
 from rest_framework.routers import DefaultRouter
-from .views import UserViewSet #UserProfileViewSet
+from .views import UserViewSet, promote_user
 from django.urls import path, include
 
 
