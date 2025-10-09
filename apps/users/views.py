@@ -80,17 +80,17 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response({'message': 'Password changed successfully.'})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def promote_user(request):
-        User = get_user_model()
-        email = "hanaa@gmail.com"  
-        try:
-           user = User.objects.get(email=email)
-           user.is_staff = True
-           user.is_superuser = True
-           user.save()
-           return JsonResponse({"status": "Promotion successful"})
-        except User.DoesNotExist:
-           return JsonResponse({"error": "User not found"})
+def promote_user(request):
+    User = get_user_model()
+    email = "hanaa@gmail.com"  
+    try:
+        user = User.objects.get(email=email)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save()
+        return JsonResponse({"status": "Promotion successful"})
+    except User.DoesNotExist:
+        return JsonResponse({"error": "User not found"})
         
 #class UserProfileViewSet(viewsets.ModelViewSet):
     """
