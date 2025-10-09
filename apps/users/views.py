@@ -7,6 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 #from .models import UserProfile
 from .serializers import (
     UserSerializer,
@@ -91,6 +92,11 @@ def promote_user(request):
         return JsonResponse({"status": "Promotion successful"})
     except User.DoesNotExist:
         return JsonResponse({"error": "User not found"})
+@csrf_exempt    
+def list_users(request):
+    User = get_user_model()
+    users = User.objects.all().values("email", "is_staff", "is_superuser")
+    return JsonResponse(list(users), safe=False)
         
 #class UserProfileViewSet(viewsets.ModelViewSet):
     """
