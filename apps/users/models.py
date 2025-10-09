@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone
+from django.contrib.auth import get_user_model
+from django.db.models.signals import post_migrate
+from django.dispatch import receiver
 
 class UserManager(BaseUserManager):
     def create_user(self, email, name, password=None, role='student', **extra_fields):
@@ -63,3 +66,12 @@ class Teacher(models.Model):
     
     def __str__(self):
         return f"Teacher: {self.user.get_full_name()}"
+    
+@receiver(post_migrate)
+def create_default_admin(sender, **kwargs):
+    User = get_user_model()
+    email = "hanaa@gmail.com"
+    password = "1234"
+
+    if not User.objects.filter(email=email).exists():
+        User.objects.create_superuser(email=email, password=password)
