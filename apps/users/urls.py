@@ -4,7 +4,7 @@ URL patterns for user management.
 from rest_framework.routers import DefaultRouter
 from .views import UserViewSet, promote_user
 from django.urls import path, include
-from .views import list_users
+
 
 
 router = DefaultRouter()
