@@ -30,6 +30,8 @@ urlpatterns = [
     path('api/v1/', include('apps.users.urls')),
     path('api/v1/', include('apps.assignments.urls')),
 
+    path('auth/', include('dj_rest_auth.urls')),
+
 ]
 
  # Serve static and media files in development
