@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from django.conf import settings
 from django.conf.urls.static import static
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
+from allauth.account.views import password_reset_from_key
 
 urlpatterns = [
     # Admin interface
@@ -31,7 +32,14 @@ urlpatterns = [
     path('api/v1/', include('apps.assignments.urls')),
 
     path('auth/', include('dj_rest_auth.urls')),
+    path('auth/registration/', include('dj_rest_auth.registration.urls')),
+    path('accounts/', include('allauth.urls')),
 
+    path(
+        'accounts/password/reset/confirm/<uidb64>/<key>/',
+        password_reset_from_key,
+        name='password_reset_confirm'
+    ),
 ]
 
  # Serve static and media files in development
@@ -41,4 +49,4 @@ if settings.DEBUG:
 
 # Authentication
     # path('api/auth/', include('rest_framework_simplejwt.urls')),
-    # path('accounts/', include('allauth.urls')),
+    
