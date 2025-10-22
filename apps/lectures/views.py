@@ -13,12 +13,14 @@ class IsTeacherOrReadOnly(permissions.BasePermission):
         # السماح بالإضافة فقط للمعلمين
         return hasattr(request.user, 'lecture_teacher')
 
-
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+           return True
+        return obj.teacher.user == request.user
 
 class LectureViewSet(viewsets.ModelViewSet):
     serializer_class = LectureSerializer
-    queryset = Lecture.objects.all()
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsTeacherOrReadOnly]
 
     def perform_create(self, serializer):
         
@@ -82,5 +84,9 @@ class LectureViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
       user = self.request.user
       if hasattr(user, 'lecture_teacher'):
-        return Lecture.objects.filter(teacher=user.lecture_teacher).order_by('-created_at')
-      return Lecture.objects.all().order_by('created_at')
+           return Lecture.objects.filter(teacher=user.lecture_teacher).order_by('-created_at')
+
+      elif hasattr(user, 'student'):
+           return Lecture.objects.filter(students=user.student).order_by('-created_at')
+
+      return Lecture.objects.none()

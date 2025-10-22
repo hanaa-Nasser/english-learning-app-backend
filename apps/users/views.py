@@ -7,6 +7,13 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from .models import Student
+from .models import Teacher
+from .serializers import StudentDashboardSerializer, TeacherDashboardSerializer
+
+
 
 #from .models import UserProfile
 from .serializers import (
@@ -94,38 +101,29 @@ def promote_user(request):
         return JsonResponse({"error": "User not found"})
 
         
-#class UserProfileViewSet(viewsets.ModelViewSet):
-    """
-    ViewSet for user profile management.
-    """
+class DashboardView(APIView):
+    permission_classes = [IsAuthenticated]
 
-  #  serializer_class = UserProfileSerializer
-   # permission_classes = [permissions.IsAuthenticated]
+    def get(self, request):
+        user = request.user
+        base_data = UserSerializer(user).data
 
-   # def get_queryset(self):
-   #     """Return user's own profile."""
-   #     return UserProfile.objects.filter(user=self.request.user)
+        if user.role == 'student':
+            student = Student.objects.get(user=user)
+            academic_data = StudentDashboardSerializer(student).data
+            return Response({
+                "role": "student",
+                "user": base_data,
+                "academic": academic_data
+            })
 
-   # def perform_create(self, serializer):
-   #     """Create profile for current user."""
-   #     serializer.save(user=self.request.user)
+        elif user.role == 'teacher':
+            teacher = Teacher.objects.get(user=user)
+            teacher_data = TeacherDashboardSerializer(teacher).data
+            return Response({
+                "role": "teacher",
+                "user": base_data,
+                "profile": teacher_data
+            })
 
-  #  @action(detail=False, methods=['get'])
-   # def statistics(self, request):
-   #     """Get user learning statistics."""
-   #     try:
-   #         profile = request.user.profile
-   #         data = {
-   #             'total_study_time': profile.total_study_time,
-   #             'lessons_completed': profile.lessons_completed,
-   #             'exercises_completed': profile.exercises_completed,
-   #             'current_streak': profile.current_streak,
-   #             'longest_streak': profile.longest_streak,
-   #             'daily_goal_minutes': profile.daily_goal_minutes,
-   #         }
-   #         return Response(data)
-   #     except UserProfile.DoesNotExist:
-   #         return Response(
-   #             {'error': 'Profile not found'},
-   #             status=status.HTTP_404_NOT_FOUND
-   #         )
+        return Response({"error": "Unknown role"}, status=400)

@@ -50,7 +50,10 @@ class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     subscription_status = models.BooleanField(default=False)
     is_available = models.BooleanField(default=True)
-
+    # بيانات لوحة التحكم
+    status = models.CharField(max_length=50, default='Committed')
+    total_marks = models.IntegerField(default=0)
+    remaining_lectures = models.IntegerField(default=0)
     
     def __str__(self):
        return f"Student: {self.user.get_full_name()}"

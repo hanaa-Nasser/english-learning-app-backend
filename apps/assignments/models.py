@@ -9,10 +9,12 @@ class Assignment(models.Model):
     due_date = models.DateField()
     file_url = models.URLField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey('users.Teacher', on_delete=models.CASCADE, null=True, blank=True)
+
 
 class AssignmentSubmission(models.Model):
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
-    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    student = models.ForeignKey('users.Student', on_delete=models.CASCADE, null=True, blank=True)
     file_url = models.URLField()
     submitted_at = models.DateTimeField(auto_now_add=True)
     grade = models.FloatField(blank=True, null=True)

@@ -5,8 +5,10 @@ Serializers for user models.
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
+from .models import Student
+from .models import Teacher
 
-#from .models import UserProfile
+
 
 User = get_user_model()
 
@@ -72,24 +74,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         ]
 
 
-#class UserProfileSerializer(serializers.ModelSerializer):
-#    """Serializer for UserProfile model."""
 
-#    user = UserSerializer(read_only=True)
-
-#    class Meta:
-#        model = UserProfile
-#        fields = [
-#            'id', 'user', 'total_study_time', 'lessons_completed',
- #           'exercises_completed', 'current_streak', 'longest_streak',
- #           'daily_goal_minutes', 'notifications_enabled',
- #           'email_notifications', 'created_at', 'updated_at'
- #       ]
- #       read_only_fields = [
- #           'id', 'user', 'total_study_time', 'lessons_completed',
- #           'exercises_completed', 'current_streak', 'longest_streak',
- #           'created_at', 'updated_at'
- #       ]
 
 
 class PasswordChangeSerializer(serializers.Serializer):
@@ -116,3 +101,13 @@ class PasswordChangeSerializer(serializers.Serializer):
         if not user.check_password(value):
             raise serializers.ValidationError("Old password is incorrect.")
         return value
+    
+class StudentDashboardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = ['status', 'total_marks', 'remaining_lectures']
+
+class TeacherDashboardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Teacher
+        fields = ['bio', 'office_hours', 'is_available']

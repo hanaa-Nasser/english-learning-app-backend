@@ -11,6 +11,8 @@ from django.conf.urls.static import static
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from allauth.account.views import password_reset_from_key
 
+
+
 urlpatterns = [
     # Admin interface
     path('', lambda request: JsonResponse({'message': 'API is running ✅'})),
@@ -30,6 +32,8 @@ urlpatterns = [
     path('api/v1/', include('apps.notifications.urls')),
     path('api/v1/', include('apps.users.urls')),
     path('api/v1/', include('apps.assignments.urls')),
+
+   
 
     path('auth/', include('dj_rest_auth.urls')),
     path('auth/registration/', include('dj_rest_auth.registration.urls')),
