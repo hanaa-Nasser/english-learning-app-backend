@@ -31,6 +31,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255)
     profile_photo = models.URLField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    preferred_language = models.CharField(max_length=10, default='en')
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

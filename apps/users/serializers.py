@@ -14,7 +14,7 @@ User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """Serializer for User model."""
+    
 
     full_name = serializers.SerializerMethodField()
     class Meta:
@@ -70,11 +70,9 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         fields = [
              'name',
             'profile_photo',
-
+            'phone_number',
+            'preferred_language',
         ]
-
-
-
 
 
 class PasswordChangeSerializer(serializers.Serializer):
