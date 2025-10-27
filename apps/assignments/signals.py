@@ -20,19 +20,21 @@ def notify_students_on_new_assignment(sender, instance, created, **kwargs):
                 target_id=instance.id
             )
 
-@receiver(post_save, sender=AssignmentSubmission)
-def notify_teacher_on_submission(sender, instance, created, **kwargs):
-    if created:
-        assignment = instance.assignment
-        lecture = assignment.lecture
-        teacher = lecture.teacher.user
-        student_name = instance.student.user.name
+        # إرسال بريد إلكتروني
+        from django.core.mail import send_mail
+        emails = [student.email for student in students if student.email]
+        send_mail(
+            subject='📝 New Assignment Available',
+            message=f'''
+            A new assignment has been added.
 
-        Notification.objects.create(
-            user=teacher,
-            title=f"{student_name} submitted assignment '{assignment.title}'",
-            body=f"The student {student_name} has submitted their assignment for the lecture '{lecture.title}'.",
-            action_type='assignment_submission',
-            target_type='assignment',
-            target_id=assignment.id
+            Title: {instance.title}
+            Lecture: {lecture.title}
+            Due Date: {instance.due_date}
+
+            Please check the platform to submit your work on time.
+            ''',
+            from_email='noreply@englishlearning.com',
+            recipient_list=emails,
+            fail_silently=False
         )
