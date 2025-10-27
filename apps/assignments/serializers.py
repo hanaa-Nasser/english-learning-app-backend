@@ -17,5 +17,5 @@ class AssignmentSubmissionSerializer(serializers.ModelSerializer):
         model = AssignmentSubmission
         fields = ['id', 'assignment', 'assignment_title', 'student',
             'student_name', 'file_url', 'submitted_at', 'grade']
-        read_only_fields = ['submitted_at', 'grade', 'student']
+        read_only_fields = ['submitted_at',  'student']
 
