@@ -9,8 +9,7 @@ User = get_user_model()
 
 @receiver(post_save, sender=Lecture)
 def notify_students(sender, instance, created, **kwargs):
-    students = User.objects.filter(groups__name='students')
-
+    students = User.objects.filter(role='student')
     title = "New Lecture Added" if created else "Lecture Updated"
     body = f"Lecture Title: {instance.title}\nTeacher: {instance.teacher.user.username}"
 
