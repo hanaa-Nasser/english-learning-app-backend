@@ -57,11 +57,10 @@ class Migration(migrations.Migration):
                 ),
                 ("title", models.CharField(max_length=255)),
                 ("description", models.TextField(blank=True)),
-                ("video", models.URLField(blank=True, null=True)),
+                ("video", models.TextField(blank=True, null=True)),
                 (
                     "pdf",
-                    cloudinary.models.CloudinaryField(
-                        blank=True, max_length=255, null=True, verbose_name="pdf"
+                    models.TextField(blank=True, null=True
                     ),
                 ),
                 ("created_at", models.DateTimeField(auto_now_add=True)),
