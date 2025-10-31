@@ -1,7 +1,5 @@
-import cloudinary.uploader
 from rest_framework import viewsets, permissions
-from rest_framework.response import Response
-from rest_framework.exceptions import PermissionDenied, ValidationError
+from rest_framework.exceptions import PermissionDenied
 from .models import Lecture
 from .serializers import LectureSerializer
 
@@ -25,72 +23,13 @@ class LectureViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         user = self.request.user
 
-        # Check if user is linked to a Teacher profile
         if not hasattr(user, 'lecture_teacher'):
             raise PermissionDenied("User is not registered as a teacher.")
 
-        video_file = self.request.FILES.get('video')
-        pdf_file = self.request.FILES.get('pdf')
-
-        video_url = serializer.validated_data.get('video')
-
-        if pdf_file:
-            try:
-                uploaded_pdf = cloudinary.uploader.upload(
-                    pdf_file,
-                    resource_type="raw",
-                    format="pdf",
-                    use_filename=True,
-                    unique_filename=False,
-                    overwrite=True,
-                    access_mode="public"
-                )
-                pdf_url = uploaded_pdf.get('secure_url')
-            except Exception as e:
-                raise ValidationError(f"PDF upload failed: {str(e)}")
-        else:
-            pdf_url = None
-
-        serializer.validated_data['video'] = video_url
-        serializer.validated_data['pdf'] = pdf_url
-
-        serializer.save(
-            teacher=user.lecture_teacher,
-            video=video_url,
-            pdf=pdf_url
-        )
+        serializer.save(teacher=user.lecture_teacher)
 
     def perform_update(self, serializer):
-        video_file = self.request.FILES.get('video')
-        pdf_file = self.request.FILES.get('pdf')
-
-        video_url = serializer.validated_data.get('video')
-
-        if pdf_file:
-            try:
-                uploaded_pdf = cloudinary.uploader.upload(
-                    pdf_file,
-                    resource_type="raw",
-                    format="pdf",
-                    use_filename=True,
-                    unique_filename=False,
-                    overwrite=True,
-                    access_mode="public"
-                )
-                pdf_url = uploaded_pdf.get('secure_url')
-            except Exception as e:
-                raise ValidationError(f"PDF upload failed: {str(e)}")
-        else:
-            pdf_url = serializer.instance.pdf  # Keep old PDF if no new file is uploaded
-
-        serializer.validated_data['video'] = video_url
-        serializer.validated_data['pdf'] = pdf_url
-
-        serializer.save(
-            teacher=self.request.user.lecture_teacher,
-            video=video_url,
-            pdf=pdf_url
-        )
+        serializer.save(teacher=self.request.user.lecture_teacher)
 
     def get_queryset(self):
         user = self.request.user
@@ -99,3 +38,4 @@ class LectureViewSet(viewsets.ModelViewSet):
         elif hasattr(user, 'student'):
             return Lecture.objects.filter(students=user.student).order_by('-created_at')
         return Lecture.objects.none()
+
