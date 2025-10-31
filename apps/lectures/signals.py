@@ -1,6 +1,5 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from asgiref.sync import async_to_sync
 from .models import Lecture
 from django.core.mail import send_mail
 from apps.users.models import User
@@ -29,17 +28,17 @@ def send_lecture_notification(sender, instance, created, **kwargs):
        
 
         # إشعار بريد إلكتروني
-        send_mail(
-            subject='📚 New Lecture Available',
-            message=f'''
-            A new lecture has been uploaded.
+        #send_mail(
+           ## subject='📚 New Lecture Available',
+           # message=f'''
+           # A new lecture has been uploaded.
 
-            Title: {instance.title}
-            Description: {instance.description}
-            Video Link: {instance.video or "Not available"}
-            PDF File: {instance.pdf or "Not available"}
-            ''',
-            from_email='noreply@yourdomain.com',
-            recipient_list=emails,
-            fail_silently=False
-        )
+           # Title: {instance.title}
+           # Description: {instance.description}
+           # Video Link: {instance.video or "Not available"}
+           ## PDF File: {instance.pdf or "Not available"}
+           # ''',
+           ## from_email='noreply@yourdomain.com',
+           # recipient_list=emails,
+           # fail_silently=False
+       # )
