@@ -5,7 +5,6 @@ Base settings for English Learning App Backend.
 import os
 from pathlib import Path
 from datetime import timedelta
-import cloudinary
 import environ
 import dj_database_url
 
@@ -44,8 +43,7 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount',
     'drf_spectacular',
     'rest_framework.authtoken',
-    'cloudinary',
-    'cloudinary_storage',
+
     'channels',
     
     
