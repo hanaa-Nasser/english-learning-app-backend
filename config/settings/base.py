@@ -44,13 +44,7 @@ THIRD_PARTY_APPS = [
     'drf_spectacular',
     'rest_framework.authtoken',
 
-    'channels',
-    
-    
-
-    
-    
-
+   
 ]
 
 LOCAL_APPS = [
@@ -68,7 +62,6 @@ LOCAL_APPS = [
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
 MIDDLEWARE = [
@@ -118,12 +111,12 @@ DATABASES = {
 }
 
 
-cloudinary.config( 
-  cloud_name = env('CLOUDINARY_CLOUD_NAME'), 
-  api_key = env('CLOUDINARY_API_KEY'), 
-  api_secret = env('CLOUDINARY_API_SECRET'),
-  secure = True
-)
+#cloudinary.config( 
+ # cloud_name = env('CLOUDINARY_CLOUD_NAME'), 
+ # api_key = env('CLOUDINARY_API_KEY'), 
+ # api_secret = env('CLOUDINARY_API_SECRET'),
+  #secure = True
+#)
 
 
 # Password validation
