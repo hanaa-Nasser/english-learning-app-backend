@@ -1,6 +1,5 @@
 from django.db import models
 from django.conf import settings
-from cloudinary.models import CloudinaryField
 from django.conf import settings
 from apps.users.models import Student
 
@@ -18,7 +17,7 @@ class Teacher(models.Model):
 class Lecture(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    video = models.URLField(blank=True, null=True)
+    video = models.TextField(blank=True, null=True)
     pdf =models.TextField(blank=True, null=True)
     students = models.ManyToManyField(Student, blank=True, related_name='lectures') 
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='lectures')
