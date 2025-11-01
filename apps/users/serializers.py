@@ -20,7 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'id',  'name', 'email', 'role',
+            'id',  'name', 'email','phone_number', 'role',
              'profile_photo',
              'created_at','full_name'
             
@@ -42,7 +42,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'name', 'email', 'password',
+            'name', 'email','phone_number', 'password',
             'password_confirm'
             
         ]
