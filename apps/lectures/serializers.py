@@ -6,7 +6,7 @@ class LectureSerializer(serializers.ModelSerializer):
     teacher_name = serializers.CharField(source='teacher.name', read_only=True)
     class Meta:
         model = Lecture
-        fields = ['id', 'title', 'description', 'video', 'pdf','teacher_name']
+        fields = ['id', 'title', 'description', 'video', 'pdf','created_at','teacher_name']
         extra_kwargs = {'teacher': {'read_only': True}}
 
     def create(self, validated_data):
