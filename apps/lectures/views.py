@@ -29,8 +29,18 @@ class LectureViewSet(viewsets.ModelViewSet):
         serializer.save(teacher=user.lecture_teacher)
 
     def perform_update(self, serializer):
-        serializer.save(teacher=self.request.user.lecture_teacher)
+       user = self.request.user
+       lecture = self.get_object()
+       if user.role != 'teacher' or lecture.teacher.user != user:
+        raise PermissionDenied("You are not allowed to update this lecture.")
+       serializer.save()
 
+    def perform_destroy(self, instance):
+       user = self.request.user
+       if user.role != 'teacher' or instance.teacher.user != user:
+        raise PermissionDenied("You are not allowed to delete this lecture.")
+       instance.delete()
+      
     def get_queryset(self):
        return Lecture.objects.all().order_by('-created_at')
      #   user = self.request.user

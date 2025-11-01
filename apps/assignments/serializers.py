@@ -4,10 +4,14 @@ from .models import Assignment, AssignmentSubmission
 class AssignmentSerializer(serializers.ModelSerializer):
     lecture_title = serializers.CharField(source='lecture.title', read_only=True)
     teacher_name = serializers.CharField(source='created_by.user.name', read_only=True)
+    has_submitted = serializers.SerializerMethodField()
     class Meta:
         model = Assignment
         fields = '__all__'
-
+    
+    def get_has_submitted(self, obj):
+        user = self.context['request'].user
+        return AssignmentSubmission.objects.filter(assignment=obj, student__user=user).exists()
 
 class AssignmentSubmissionSerializer(serializers.ModelSerializer):
     student_name = serializers.CharField(source='student.user.name', read_only=True)

@@ -24,11 +24,20 @@ class AssignmentSubmissionViewSet(viewsets.ModelViewSet):
         return AssignmentSubmission.objects.none()
 
     def perform_create(self, serializer):
-        user = self.request.user
-        if not hasattr(user, 'student'):
-            raise PermissionDenied("Only students can submit assignments.")
-        serializer.save(student=user.student)
+       user = self.request.user
+       if not hasattr(user, 'student'):
+           raise PermissionDenied("Only students can submit assignments.")
 
+       assignment = serializer.validated_data['assignment']
+       already_submitted = AssignmentSubmission.objects.filter(
+       assignment=assignment,
+       student=user.student
+       ).exists()
+
+       if already_submitted:
+        raise PermissionDenied("You have already submitted this assignment.")
+
+       serializer.save(student=user.student)
     def perform_update(self, serializer):
         user = self.request.user
         submission = self.get_object()
