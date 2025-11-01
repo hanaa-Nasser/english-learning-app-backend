@@ -32,10 +32,11 @@ class LectureViewSet(viewsets.ModelViewSet):
         serializer.save(teacher=self.request.user.lecture_teacher)
 
     def get_queryset(self):
-        user = self.request.user
-        if hasattr(user, 'lecture_teacher'):
-            return Lecture.objects.filter(teacher=user.lecture_teacher).order_by('-created_at')
-        elif hasattr(user, 'student'):
-            return Lecture.objects.filter(students=user.student).order_by('-created_at')
-        return Lecture.objects.none()
+       return Lecture.objects.all().order_by('-created_at')
+     #   user = self.request.user
+     #   if hasattr(user, 'lecture_teacher'):
+      #      return Lecture.objects.filter(teacher=user.lecture_teacher).order_by('-created_at')
+      #  elif hasattr(user, 'student'):
+      #      return Lecture.objects.filter(students=user.student).order_by('-created_at')
+      #  return Lecture.objects.none()
 

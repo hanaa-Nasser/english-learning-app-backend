@@ -15,6 +15,7 @@ class NotificationViewSet(ReadOnlyModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
+        print ("User Role:", user.role, user)
         return Notification.objects.filter(
             user=user,
             recipient_role=user.role  

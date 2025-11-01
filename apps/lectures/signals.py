@@ -18,6 +18,7 @@ def send_lecture_notification(sender, instance, created, **kwargs):
         for student in students:
             Notification.objects.create(
                 user=student,
+                recipient_role='student', 
                 title=f"New Lecture: {instance.title}",
                 body=f"A new lecture has been added: {instance.description}",
                 action_type='lecture_created',

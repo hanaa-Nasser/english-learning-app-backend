@@ -10,6 +10,7 @@ class Notification(models.Model):
     ]
     ACTION_TYPES = [
         ('new_assignment', 'New Assignment'),
+        ('new_submission', 'New Submission'),
         ('new_lecture', 'New Lecture'),
         ('new_exam','New Exam'),
         ('assignment_graded', 'Assignment Graded')
