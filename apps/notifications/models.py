@@ -4,6 +4,10 @@ from django.conf import settings
 User = get_user_model()
 
 class Notification(models.Model):
+    ROLE_TYPES = [
+        ('student', 'Student'),
+        ('teacher', 'Teacher'),
+    ]
     ACTION_TYPES = [
         ('new_assignment', 'New Assignment'),
         ('new_lecture', 'New Lecture'),
@@ -17,7 +21,8 @@ class Notification(models.Model):
         ('exam', 'Exam'),
     ]
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='notifications')    
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='notifications') 
+    recipient_role = models.CharField(max_length=20, choices=ROLE_TYPES)   
     title = models.CharField(max_length=255)
     body = models.TextField(blank=True, null=True)
     action_type = models.CharField(max_length=50, choices=ACTION_TYPES)

@@ -6,6 +6,6 @@ class NotificationSerializer(serializers.ModelSerializer):
         model = Notification
         fields = [
             'id', 'title', 'body',
-            'action_type', 'target_type',
+            'action_type', 'target_type','recipient_role',
             'target_id', 'is_read', 'created_at'
         ]
