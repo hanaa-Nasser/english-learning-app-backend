@@ -17,6 +17,7 @@ def notify_students(sender, instance, created, **kwargs):
         # Save notification to the database
         Notification.objects.create(
             user=student,
+            recipient_role='student',  
             title=title,
             body=body,
             action_type="new_lecture",
@@ -25,11 +26,11 @@ def notify_students(sender, instance, created, **kwargs):
         )
 
         # Send email to the student
-        if student.email:
-            send_mail(
-                subject=title,
-                message=body,
-                from_email=None,  # Uses DEFAULT_FROM_EMAIL from settings
-                recipient_list=[student.email],
-                fail_silently=True
-            )
+       # if student.email:
+         #   send_mail(
+         #       subject=title,
+         #       message=body,
+        #     from_email=None,  # Uses DEFAULT_FROM_EMAIL from settings
+        #      recipient_list=[student.email],
+        #      fail_silently=True
+        # )
