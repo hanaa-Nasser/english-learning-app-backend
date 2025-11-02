@@ -20,24 +20,24 @@ def notify_students_on_new_assignment(sender, instance, created, **kwargs):
                 target_type='assignment',
                 target_id=instance.id
             )
-        # إرسال بريد إلكتروني
-        from django.core.mail import send_mail
-        emails = [student.user.email for student in students if student.user.email]
-        send_mail(
-            subject='📝 New Assignment Available',
-            message=f'''
-            A new assignment has been added.
+        # # إرسال بريد إلكتروني
+        # #from django.core.mail import send_mail
+        # #emails = [student.user.email for student in students if student.user.email]
+        # #send_mail(
+        #     subject='📝 New Assignment Available',
+        #     message=f'''
+        #     A new assignment has been added.
 
-            Title: {instance.title}
-            Lecture: {lecture.title}
-            Due Date: {instance.due_date}
+        #     Title: {instance.title}
+        #     Lecture: {lecture.title}
+        #     Due Date: {instance.due_date}
 
-            Please check the platform to submit your work on time.
-            ''',
-            from_email='noreply@englishlearning.com',
-            recipient_list=emails,
-            fail_silently=False
-        )
+        #     Please check the platform to submit your work on time.
+        #     ''',
+        #     from_email='noreply@englishlearning.com',
+        #     recipient_list=emails,
+        #     fail_silently=False
+        # )
 @receiver(post_save, sender=AssignmentSubmission)
 def notify_teacher_on_submission(sender, instance, created, **kwargs):
     print("📬 Signal triggered: AssignmentSubmission created")
