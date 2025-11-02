@@ -66,8 +66,7 @@ def notify_teacher_on_submission(sender, instance, created, **kwargs):
             user=teacher,
             recipient_role='teacher',
             title=f"New Submission: {assignment.title}",
-            body=f"{instance.student.user.username} has submitted the assignment.",
-            action_type='submission_received',
+            body=f"{instance.student.user.get_full_name() or instance.student.user.email} has submitted the assignment.",            action_type='submission_received',
             target_type='assignment',
             target_id=assignment.id
         )
