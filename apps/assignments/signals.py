@@ -20,6 +20,22 @@ def notify_students_on_new_assignment(sender, instance, created, **kwargs):
                 target_type='assignment',
                 target_id=instance.id
             )
+@receiver(post_save, sender=AssignmentSubmission)
+def notify_student_on_evaluation(sender, instance, created, **kwargs):
+    # فقط عند التعديل وليس الإنشاء
+    if not created and instance.grade is not None:
+        student_user = instance.student.user
+        assignment = instance.assignment
+
+        Notification.objects.create(
+            user=student_user,
+            recipient_role='student',
+            title=f"📊 Assignment Graded: {assignment.title}",
+            body=f"You received a grade of {instance.grade}.\nFeedback: {instance.teacher_feedback or 'No comments'}",
+            action_type='assignment_graded',
+            target_type='assignment',
+            target_id=assignment.id
+        )
         # # إرسال بريد إلكتروني
         # #from django.core.mail import send_mail
         # #emails = [student.user.email for student in students if student.user.email]
