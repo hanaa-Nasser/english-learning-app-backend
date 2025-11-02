@@ -3,16 +3,16 @@ from django.dispatch import receiver
 from apps.assignments.models import Assignment, AssignmentSubmission
 from apps.notifications.models import Notification
 from apps.users.models import User
+from apps.users.models import Student
 
 @receiver(post_save, sender=Assignment)
 def notify_students_on_new_assignment(sender, instance, created, **kwargs): 
     if created:
         lecture = instance.lecture
-        students = lecture.enrolled_students.all()  
-
+        students = Student.objects.filter(is_available=True)
         for student in students:
             Notification.objects.create(
-                user=student,
+                user=student.user,
                 recipient_role='student',  
                 title=f"New Assignment: {instance.title}",
                 body=f"A new assignment has been added for lecture '{lecture.title}'. Due: {instance.due_date}",
@@ -22,7 +22,7 @@ def notify_students_on_new_assignment(sender, instance, created, **kwargs):
             )
         # إرسال بريد إلكتروني
         from django.core.mail import send_mail
-        emails = [student.email for student in students if student.email]
+        emails = [student.user.email for student in students if student.user.email]
         send_mail(
             subject='📝 New Assignment Available',
             message=f'''
