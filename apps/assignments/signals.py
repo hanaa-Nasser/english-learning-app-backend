@@ -40,6 +40,7 @@ def notify_students_on_new_assignment(sender, instance, created, **kwargs):
         )
 @receiver(post_save, sender=AssignmentSubmission)
 def notify_teacher_on_submission(sender, instance, created, **kwargs):
+    print("📬 Signal triggered: AssignmentSubmission created")
     if created:
         assignment = instance.assignment
         lecture = assignment.lecture
